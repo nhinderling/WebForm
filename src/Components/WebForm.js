@@ -150,7 +150,7 @@ function WebForm() {
 
       <div className="form-row">
         <div className="form-group">
-          <label>Date of Reservation<span class="required">*</span></label>
+          <label>Date<span class="required">*</span></label>
           <DatePicker
             selected={formData.date}
             onChange={handleDateChange}
@@ -160,7 +160,7 @@ function WebForm() {
           />
         </div>
         <div className="form-group ">
-          <label>Time of Reservation <span class="required">*</span></label>
+          <label>Time <span class="required">*</span></label>
           <select name="time" value={formData.time} onChange={handleChange} required>
             <option value="">Select a time</option>
             {generateTimeOptions()}
