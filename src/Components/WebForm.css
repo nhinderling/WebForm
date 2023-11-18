@@ -1,0 +1,116 @@
+
+
+.header{
+  color: rgb(11, 16, 16);
+  margin: 0;
+  padding: 0;
+  font-size:1rem;
+}
+
+
+.reservation-form {
+    font-family: "DM sans",sans-serif;
+    max-width: 60vw;
+    max-height: 70vh;
+    margin: 0 auto;
+    padding: 5vh 5vw;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1vh;
+  }
+  
+
+  
+  .form-group:first-child {
+    margin-right: 1vw;
+    
+  }
+  
+  .form-group:last-child {
+    margin-left: 1vw;
+  
+  }
+  
+  .form-group label {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: grey;
+    font-size: 1rem;
+    margin: 1vh 0vw;
+    font-family:"DM sans",sans-serif;
+
+    display: flex;
+    justify-content: left;
+    align-items: left;
+  }
+  
+  .form-group input {
+    width: 100%;
+    font-size: 1rem;
+    font-family: "DM sans",sans-serif;
+    padding: 1vh;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    background-color:#f4efef;
+    color: #0b1010;
+  }
+  
+  .button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+ .submit-button {
+    width: 70%;
+    padding: 2vh;
+    margin: 3vh;
+    background-color: #0b1010;
+    color: #f4efef;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .submit-button:hover {
+    background-color: #292b2d;
+  }
+
+  .form-group textarea {
+    width: 100%;
+    padding: 1vh;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    resize: vertical; 
+    background-color:#f4efef;
+
+  }
+  
+  
+  .form-group:last-child select {
+    width: 100%;
+    font-size: 1rem;
+    padding: 1vh;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    background-color:#f4efef;
+  }
+
+  .required {
+    color: rgba(255, 0, 0, 0.639); 
+    margin-left: 0.3vw; 
+  }
+  
+  
