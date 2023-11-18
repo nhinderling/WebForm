@@ -16,8 +16,6 @@ function WebForm() {
     comments: ''
   });
 
-
-
   const ResetForm = () => {
     setFormData({
       firstName: '',
@@ -45,13 +43,8 @@ function WebForm() {
     setFormData({ ...formData, date });
   };
 
-  
-
   const notAvailableDate = (date) => {
-  
       return date.getDay() === 0;
-    
-
   };
 
   // Generate time options from 8 AM to 7 PM
@@ -102,26 +95,14 @@ function WebForm() {
        <div class="CenterForm">
         <div className="DetailsGroup">
           <h6>Your Booking details</h6>
-            <div className="details">
-              <p>Email: {submittedData.email}</p>
-            </div>
-            <div className="details">
-            <p>Number of People: {submittedData.numberOfPeople}</p>
-            </div>
-            <div className="details">
-            <p>Date: {submittedData.date.toString()}</p>
-            </div>
-            <div className="details">
-            <p>Time: {submittedData.time}</p>
-            </div>
-            <div className="details">
-            <p>Comments: {submittedData.comments}</p>
-            </div>
+            <Detail label="Email" value={submittedData.email} />
+            <Detail label="Number of People" value={submittedData.numberOfPeople} />
+            <Detail label="Date" value={submittedData.date.toString().substring(0,10)} />
+            <Detail label="Time" value={submittedData.time} />
+            <Detail label="Comments" value={submittedData.comments} />
           </div>
         </div>
-        <div className="button-container">
-         <button className="submit-button" onClick={ResetForm}>Make Another Reservation</button>
-        </div>
+        {renderButton('Make Another Reservation', ResetForm)}
       </div>
     );
   }
@@ -135,25 +116,12 @@ function WebForm() {
       <div class="CenterForm">
         <div className="allInput">
           <div className="form-row">
-            <div className="form-group">
-              <label>First Name<span class="required">*</span></label>
-              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
-            </div>
-            <div className="form-group">
-              <label>Last Name <span class="required">*</span></label>
-              <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
-            </div>
+          {renderFormGroup('First Name', 'text', 'firstName', formData.firstName, handleChange, 1, true)}
+          {renderFormGroup('Last Name', 'text', 'lastName', formData.lastName, handleChange,1, true)}
           </div>
 
-          <div className="form-group">
-            <label>Email Address<span class="required">*</span></label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-          </div>
-
-          <div className="form-group">
-            <label>Number of People<span class="required">*</span></label>
-            <input type="number" name="numberOfPeople" value={formData.numberOfPeople} onChange={handleChange} required />
-          </div>
+          {renderFormGroup('Email Address', 'email', 'email', formData.email, handleChange, 1,true)}
+          {renderFormGroup('Number of People', 'number', 'numberOfPeople', formData.numberOfPeople, handleChange, 1, true)}
 
           <div className="form-row">
             <div className="form-group">
@@ -175,20 +143,51 @@ function WebForm() {
             </div>
           </div>
 
-          <div className="form-group">
-            <label>Additional Comments</label>
-            <textarea name="comments" value={formData.comments} onChange={handleChange} rows="4"></textarea>
-          </div>
-        
-          <div className="button-container">
-            <button type="submit" className="submit-button">Submit Reservation</button>
-          </div>
+          {renderFormGroup('Additional Comments', 'textarea', 'comments', formData.comments, handleChange,false, 4)}
+          {renderButton('Submit Reservation', )}
         </div>
       </div>
     </form>
   );
       
 }
+
+function Detail({ label, value }) {
+  return (
+    <section className="details">
+      <p>{label}: {value}</p>
+    </section>
+  );
+}
+
+const renderFormGroup = (label, type, name, value, onChange,required,rows) => (
+  <div className="form-group">
+    <label>{label}{required && <span className="required">*</span>}</label>
+    {type === 'textarea' ? (
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        rows={rows} // Add rows attribute for textarea
+        required={required}
+      ></textarea>
+    ) : (
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      required={required}
+    />
+    )}
+  </div>
+);
+
+const renderButton = (label, onClick) => (
+  <div className="button-container">
+    <button className="submit-button" onClick={onClick}>{label}</button>
+  </div>
+);
 
 export default WebForm;
 
