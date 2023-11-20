@@ -1,4 +1,30 @@
-# Getting Started with Create React App
+# Laser Tag WebForm
+
+This Webform was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Functionality wise it works the following way: 
+- on Sundays the Company is closed
+- there is a simple backend implemented that only allows for times to be booked that haven't been booked already in that session
+
+Repo build up: 
+- storage.py : backend
+- WebForm.js : almost all functionality
+- BaseLayout.css : Styling for shared item accross the two "pages"
+- WebForm.css : Styling for the WebForm page
+- Confirmation.css : Styling for the Confirmation page
+
+Needed to run: 
+- working pyhton version (I use Python 9.6)
+- npm
+- react (package should be included in repo from bootstrapping)
+- Flask to run backend
+- CORS
+
+IMPORTANT: start backend before frontend, otherwise time data won't be loaded
+
+ISSUES: if you choose the time before the date you can book a reservation which should not be available
+
+# Getting Started with Create React App [React]
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

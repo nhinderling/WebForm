@@ -31,7 +31,7 @@ function WebForm() {
       lastName: '',
       email: '',
       numberOfPeople: '',
-      date: null,
+      date: new Date(),
       time: '',
       comments: ''
     });
@@ -85,6 +85,7 @@ function WebForm() {
   
       // Update the available times state
       setAvailableTimes(updatedAvailableTimes);
+      console.log(updatedAvailableTimes);
 
       // Update the formData.date
       setFormData({

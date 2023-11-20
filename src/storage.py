@@ -3,13 +3,11 @@ from flask_cors import CORS
 
 storage = Flask(__name__)
 
-CORS(storage, origins="http://localhost:3000")
+CORS(storage, origins="http://localhost:3000") # change this to localhost
 
 # List to store data
 submissions = []
 filtered_submissions = {}
-
-
 
 @storage.route('/submit-form', methods=['POST'])
 def handle_form_submission():
@@ -30,6 +28,7 @@ def handle_form_submission():
 
     return jsonify({"message": "Form data received"}), 200
 
+#route to complete data set
 @storage.route('/view-submissions', methods=['GET'])
 def view_submissions():
     return jsonify(submissions), 200
