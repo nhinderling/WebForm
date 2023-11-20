@@ -35,6 +35,7 @@ function WebForm() {
       time: '',
       comments: ''
     });
+    setAvailableTimes([])
     setSelectedDate(null)
     setIsSubmitted(false);
   };

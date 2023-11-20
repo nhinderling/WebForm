@@ -22,7 +22,6 @@ Needed to run:
 
 IMPORTANT: start backend before frontend, otherwise time data won't be loaded
 
-ISSUES: if you choose the time before the date you can book a reservation which should not be available
 
 # Getting Started with Create React App [React]
 
