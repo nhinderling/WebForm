@@ -10,15 +10,16 @@
   
   .form-group:first-child {
     margin-right: 1vw;
+    min-width: 10vw;
     
   }
   
   .form-group:last-child {
     margin-left: 1vw;
+    min-width: 10vw;
   
   }
 
-  
   
 .form-group label {
     margin-bottom: 0;

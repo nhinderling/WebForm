@@ -5,7 +5,15 @@ import './BaseLayout.css'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+
+const allPossibleTimes = [];
+  for (let hour = 8; hour < 19; hour++) {
+   const time = hour < 10 ? `0${hour}:00` : `${hour}:00`;
+   allPossibleTimes.push(time);
+  }
+
 function WebForm() {
+ 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -16,22 +24,29 @@ function WebForm() {
     comments: ''
   });
 
+
   const ResetForm = () => {
     setFormData({
       firstName: '',
       lastName: '',
       email: '',
       numberOfPeople: '',
-      date: new Date(),
+      date: null,
       time: '',
       comments: ''
     });
+    setSelectedDate(null)
     setIsSubmitted(false);
   };
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, Submission] = useState({});
 
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [availableTimes, setAvailableTimes] = useState([]);
+
+
+  
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -39,22 +54,50 @@ function WebForm() {
     });
   };
 
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, date });
+  const fetchFilteredSubmissions = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/view-filtered-submissions'); // Replace with your backend URL
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const filteredSubmissionsData = await response.json();
+      return filteredSubmissionsData;
+    } catch (error) {
+      console.error('Error fetching filtered submissions:', error);
+      return null;
+    }
+
+  };
+
+
+  const handleDateChange = async (date) => {
+    try {
+      // Update the selected date
+      setSelectedDate(date);
+  
+      // Fetch filtered submissions data and wait for it to resolve
+      const filteredSubmissionsData = await fetchFilteredSubmissions();
+  
+      // Calculate available times based on the selected date
+      const selectedDateString = date.toISOString().substring(0, 10);
+      const bookedTimes = filteredSubmissionsData[selectedDateString] || [];
+      const updatedAvailableTimes = allPossibleTimes.filter((time) => !bookedTimes.includes(time));
+  
+      // Update the available times state
+      setAvailableTimes(updatedAvailableTimes);
+
+      // Update the formData.date
+      setFormData({
+        ...formData,
+        date: date.toISOString().substring(0, 10), // Format the selected date as yyyy-MM-dd
+      });
+    } catch (error) {
+      console.error('Error handling date change:', error);
+    }
   };
 
   const notAvailableDate = (date) => {
       return date.getDay() === 0;
-  };
-
-  // Generate time options from 8 AM to 7 PM
-  const generateTimeOptions = () => {
-    const options = [];
-    for (let hour = 8; hour <= 19; hour++) {
-      const time = hour < 10 ? `0${hour}:00` : `${hour}:00`;
-      options.push(<option key={time} value={time}>{time}</option>);
-    }
-    return options;
   };
 
   const handleSubmit = async (event) => {
@@ -79,7 +122,7 @@ function WebForm() {
     }
    
     Submission(formData);
-    setIsSubmitted(true); // Set the form as submitted
+    setIsSubmitted(true); // Set the form as submitted 
     
   };
 
@@ -127,8 +170,8 @@ function WebForm() {
             <div className="form-group">
               <label>Date<span class="required">*</span></label>
               <DatePicker
-                selected={formData.date}
-                onChange={handleDateChange}
+                selected={selectedDate}
+                onChange={date => handleDateChange(date)}
                 filterDate={date => !notAvailableDate(date)}
                 minDate={new Date()}
                 dateFormat="yyyy-MM-dd"
@@ -137,8 +180,10 @@ function WebForm() {
             <div className="form-group ">
               <label>Time <span class="required">*</span></label>
               <select name="time" value={formData.time} onChange={handleChange} required>
-                <option value="">Select a time</option>
-                {generateTimeOptions()}
+                <option value=""></option>
+                {availableTimes.map((time) => (
+                  <option key={time} value={time}>{time}</option>
+                ))}
               </select>
             </div>
           </div>
