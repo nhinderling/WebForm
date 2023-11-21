@@ -15,10 +15,14 @@ Repo build up:
 
 Needed to run: 
 - working pyhton version (I use Python 9.6)
-- npm
+- npm for React (Node Package Manager)
 - react (package should be included in repo from bootstrapping)
 - Flask to run backend
-- CORS
+- CORS for Flask 
+
+Running it: 
+- terminal 1: cd yourstorage/my-app/src , export FLASK_APP="storage.py", flask run
+- terminal 2: npm start
 
 IMPORTANT: start backend before frontend, otherwise time data won't be loaded
 

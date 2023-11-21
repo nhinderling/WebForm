@@ -5,33 +5,45 @@ import './BaseLayout.css'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+// "STATIC" DATA //
 
-const allPossibleTimes = [];
+const allPossibleTimes = []; // opening hours
   for (let hour = 8; hour < 19; hour++) {
    const time = hour < 10 ? `0${hour}:00` : `${hour}:00`;
    allPossibleTimes.push(time);
   }
 
+const currentDate = new Date(); 
+currentDate.setDate(currentDate.getDate() + 1); // day after today
+
+// WEBFORM //
+
 function WebForm() {
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedData, Submission] = useState({});
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [availableTimes, setAvailableTimes] = useState([]);
  
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ // data storage
     firstName: '',
     lastName: '',
     email: '',
     numberOfPeople: '',
-    date: new Date(),
+    date: currentDate,
     time: '',
     comments: ''
   });
 
 
-  const ResetForm = () => {
+  const ResetForm = () => { // reset data upon making another reservation
     setFormData({
       firstName: '',
       lastName: '',
       email: '',
       numberOfPeople: '',
-      date: new Date(),
+      date: currentDate,
       time: '',
       comments: ''
     });
@@ -40,38 +52,15 @@ function WebForm() {
     setIsSubmitted(false);
   };
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submittedData, Submission] = useState({});
 
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [availableTimes, setAvailableTimes] = useState([]);
-
-
-  
-  const handleChange = (event) => {
+  const handleChange = (event) => { // Change of inputs
     setFormData({
       ...formData,
       [event.target.name]: event.target.value
     });
   };
 
-  const fetchFilteredSubmissions = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:5000/view-filtered-submissions'); // Replace with your backend URL
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const filteredSubmissionsData = await response.json();
-      return filteredSubmissionsData;
-    } catch (error) {
-      console.error('Error fetching filtered submissions:', error);
-      return null;
-    }
-
-  };
-
-
-  const handleDateChange = async (date) => {
+  const handleDateChange = async (date) => { // Change of Data input
     try {
       // Update the selected date
       setSelectedDate(date);
@@ -91,17 +80,19 @@ function WebForm() {
       // Update the formData.date
       setFormData({
         ...formData,
-        date: date.toISOString().substring(0, 10), // Format the selected date as yyyy-MM-dd
+        date: date.toISOString().substring(0, 10), 
       });
     } catch (error) {
       console.error('Error handling date change:', error);
     }
   };
 
-  const notAvailableDate = (date) => {
+  const notAvailableDate = (date) => { // on Sundays we are closed
       return date.getDay() === 0;
   };
 
+
+  // SUBMISSION OF DATA //
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -118,7 +109,7 @@ function WebForm() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const responseData = await response.json();
-      console.log(responseData); //  handle the response here
+      console.log(responseData); 
     } catch (error) {
       console.error('There was an error submitting the form:', error);
     }
@@ -128,7 +119,26 @@ function WebForm() {
     
   };
 
+  // FETCH FILTERED DATA //
 
+  const fetchFilteredSubmissions = async () => { 
+    try {
+      const response = await fetch('http://127.0.0.1:5000/view-filtered-submissions'); // Replace with your backend URL
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const filteredSubmissionsData = await response.json();
+      return filteredSubmissionsData;
+    } catch (error) {
+      console.error('Error fetching filtered submissions:', error);
+      return null;
+    }
+
+  };
+
+  // RETURN //
+
+  // Confirmation Page //
   if (isSubmitted) {
     return (
       <div className="form">
@@ -139,7 +149,7 @@ function WebForm() {
        </div>
        <div class="CenterForm">
         <div className="DetailsGroup">
-          <h6>Your Booking details</h6>
+          <h6>your booking details</h6>
             <Detail label="Email" value={submittedData.email} />
             <Detail label="Number of People" value={submittedData.numberOfPeople} />
             <Detail label="Date" value={submittedData.date.toString().substring(0,10)} />
@@ -152,6 +162,7 @@ function WebForm() {
     );
   }
 
+  // Submission Page, Default Page //
   return (
     <form onSubmit={handleSubmit} className="form">
       <div className="header">
@@ -161,22 +172,23 @@ function WebForm() {
       <div class="CenterForm">
         <div className="allInput">
           <div className="form-row">
-          {renderFormGroup('First Name', 'text', 'firstName', formData.firstName, handleChange, 1, true)}
-          {renderFormGroup('Last Name', 'text', 'lastName', formData.lastName, handleChange,1, true)}
+          {renderFormGroup('First Name', 'text', 'firstName', formData.firstName, handleChange, true,1)}
+          {renderFormGroup('Last Name', 'text', 'lastName', formData.lastName, handleChange, true,1)}
           </div>
 
-          {renderFormGroup('Email Address', 'email', 'email', formData.email, handleChange, 1,true)}
-          {renderFormGroup('Number of People', 'number', 'numberOfPeople', formData.numberOfPeople, handleChange, 1, true)}
+          {renderFormGroup('Email Address', 'email', 'email', formData.email, handleChange, true,1)}
+          {renderFormGroup('Number of People', 'number', 'numberOfPeople', formData.numberOfPeople, handleChange,  true,1)}
 
           <div className="form-row">
             <div className="form-group">
               <label>Date<span class="required">*</span></label>
-              <DatePicker
+              <DatePicker 
                 selected={selectedDate}
                 onChange={date => handleDateChange(date)}
                 filterDate={date => !notAvailableDate(date)}
-                minDate={new Date()}
+                minDate={currentDate}
                 dateFormat="yyyy-MM-dd"
+                placeholderText="yyyy-MM-dd" 
               />
             </div>
             <div className="form-group ">
@@ -199,6 +211,8 @@ function WebForm() {
       
 }
 
+// RETURN FUNCTIONS // 
+
 function Detail({ label, value }) {
   return (
     <section className="details">
@@ -211,22 +225,23 @@ const renderFormGroup = (label, type, name, value, onChange,required,rows) => (
   <div className="form-group">
     <label>{label}{required && <span className="required">*</span>}</label>
     {type === 'textarea' ? (
-      <textarea
-        name={name}
-        value={value}
-        onChange={onChange}
-        rows={rows} // Add rows attribute for textarea
-        required={required}
-      ></textarea>
-    ) : (
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-    />
-    )}
+        <textarea
+          name={name}
+          value={value}
+          onChange={onChange}
+          rows={rows}
+          required={required}
+        ></textarea>
+      ) : (
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          required={required}
+          min={type === 'number' ? 1 : undefined} //set min number of people to 1
+        />
+      )}
   </div>
 );
 

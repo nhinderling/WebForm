@@ -3,9 +3,9 @@ from flask_cors import CORS
 
 storage = Flask(__name__)
 
-CORS(storage, origins="http://localhost:3000") # change this to localhost
+CORS(storage, origins="http://localhost:3000") # change this to your localhost
 
-# List to store data
+# Lists to store data
 submissions = []
 filtered_submissions = {}
 
@@ -15,7 +15,7 @@ def handle_form_submission():
     submissions.append(data)  # Add the received data to the list
 
     # Extract date and time from the submission
-    date = data.get('date')[:10]
+    date = data.get('date')[:10] 
     time = data.get('time')
 
     # Check if the date is already in the filtered_submissions dictionary
