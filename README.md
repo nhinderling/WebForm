@@ -3,7 +3,7 @@
 This Webform was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Functionality wise it works the following way: 
-- on Sundays the Company is closed
+- on Sundays the company is closed
 - same day bookings are not possible
 - there is a simple backend implemented that only allows for times to be booked that haven't been booked already in that session. A session starts when flask is running, and ends with shutting down flask.  
 
