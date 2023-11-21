@@ -22,7 +22,7 @@ Needed to run:
 
 Running it: 
 - terminal 1: cd yourstorage/my-app/src , export FLASK_APP="storage.py", flask run
-- terminal 2: npm start
+- terminal 2: cd yourstorage/my-app npm start
 
 IMPORTANT: start backend before frontend, otherwise time data won't be loaded
 
