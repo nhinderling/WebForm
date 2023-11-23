@@ -15,7 +15,7 @@ Repo build up:
 - Confirmation.css : Styling for the Confirmation page
 
 Needed to run: 
-- working pyhton version (I use Python 9.6)
+- working pyhton version (I use Python 3.9.6)
 - npm for React (Node Package Manager)
 - react (package should be included in repo from bootstrapping)
 - Flask to run backend
