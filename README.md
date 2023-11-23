@@ -22,6 +22,7 @@ Needed to run:
 - CORS for Flask 
 
 Running it: 
+- pip3 install -r requirements.txt : will install requirements
 - terminal 1: cd yourstorage/my-app/src , export FLASK_APP="storage.py", flask run
 - terminal 2: cd yourstorage/my-app npm start
 
